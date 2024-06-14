@@ -27,7 +27,7 @@ jobs:
       uses: hashicorp/setup-packer@v2.0.0
 
     - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v4
+      uses: aws-actions/configure-aws-credentials@v3
       with:
         role-to-assume: ${{ secrets.ROLE_TO_ASSUME }}
         aws-region: ${{ env.AWS_REGION }}
