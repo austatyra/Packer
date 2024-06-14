@@ -23,12 +23,11 @@ jobs:
     - name: Set up Packer
       uses: hashicorp/setup-packer@v2.0.0
 
-    - name: Configure AWS credentials from OIDC
-      id: aws-creds
-      uses: aws-actions/configure-aws-credentials@v1
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
       with:
-        role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
-        aws-region: us-east-1
+        role-to-assume: ${{ secrets.ROLE_TO_ASSUME }}
+        aws-region: ${{ env.AWS_REGION }}
 
     - name: Initialize Packer Plugins
       run: packer init template.pkr.hcl
