@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Packer
+      uses: hashicorp/setup-packer@v2.0.0
+
+    - name: Configure AWS credentials from OIDC
+      id: aws-creds
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+        aws-region: us-east-1
+
+    - name: Initialize Packer Plugins
+      run: packer init template.pkr.hcl
+
+    - name: Validate Packer template
+      run: packer validate template.pkr.hcl  
+    
+    - name: Build AMI
+      run: packer build template.pkr.hcl
+
+
